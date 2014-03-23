@@ -18,7 +18,7 @@ namespace StringCalculatorKata
         public void ConstructStringCalculator()
         {
             loggerMock = new Mock<ILogger>(MockBehavior.Strict);
-
+            loggerMock.Setup(s => s.Write(It.IsAny<string>()));
             stringCalculator = new StringCalculator(loggerMock.Object);
 
         }
@@ -53,7 +53,7 @@ namespace StringCalculatorKata
         [Test]
         public void AddNumbers_LoggerPrintsResult()
         {
-            loggerMock.Setup(s => s.Write(It.IsAny<string>()));
+
             stringCalculator.Add("1,2,3");
             loggerMock.Verify(l => l.Write("6"));
         }
