@@ -30,5 +30,40 @@ namespace StringCalculatorKata
             Assert.That(stringCalculator.Add("5"), Is.EqualTo(5));
         }
 
+        [Test]
+        public void AddRandomAmountOfNumbers()
+        {
+            var randomInts = GenerateIntegerList(new Random().Next(100));
+            var numberString = GenerateCommaSeparatedNumberString(randomInts);
+            var sum = randomInts.Sum();
+            Assert.That(stringCalculator.Add(numberString), Is.EqualTo(sum));
+        }
+
+        [Test]
+        public void AddNumbersDelimitedWithLineBreak_ReturnsSum()
+        {
+            Assert.That(stringCalculator.Add("1\n2,3"), Is.EqualTo(6));
+        }
+        
+
+
+        private string GenerateCommaSeparatedNumberString(IEnumerable<int> randomInts)
+        {
+            var result = randomInts.Aggregate("", (current, number) => current + (number + ", "));
+            result.TrimEnd(' ');
+            result.TrimEnd(',');
+            return result; 
+        }
+        
+
+        private IEnumerable<int> GenerateIntegerList(int quantity)
+        {
+            var numbers = new int[quantity];
+            for (var i = 0; i < numbers.Length; i++)
+            {
+                numbers[i] = new Random().Next(100);
+            }
+            return numbers; 
+        }
     }
 }

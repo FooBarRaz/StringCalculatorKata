@@ -9,12 +9,24 @@ namespace StringCalculatorKata
     {
         internal int Add(string numbers)
         {
-            int result;
-            if (Int32.TryParse(numbers, out result))
+            var result = 0;
+            var numberList = SplitNumbers(numbers);
+            foreach (var number in numberList)
             {
-                return result;
+                int numberAsInt;
+                if (Int32.TryParse(number, out numberAsInt))
+                {
+                    result += numberAsInt;
+                }
             }
-            else return 0;
+            return result;
+        }
+
+
+        private IEnumerable<string> SplitNumbers(string numbers)
+        {
+            numbers = numbers.Replace('\n', ',');
+            return numbers.Split(',');
         }
     }
 }
