@@ -5,17 +5,22 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Moq;
 
 namespace StringCalculatorKata
 {
     class StringCalculatorTest
     {
         private StringCalculator stringCalculator;
+        private Mock<ILogger> loggerMock;
 
         [SetUp]
         public void ConstructStringCalculator()
         {
-            stringCalculator = new StringCalculator();
+            loggerMock = new Mock<ILogger>(MockBehavior.Strict);
+
+            stringCalculator = new StringCalculator(loggerMock.Object);
+
         }
 
         [Test]
@@ -44,7 +49,14 @@ namespace StringCalculatorKata
         {
             Assert.That(stringCalculator.Add("1\n2,3"), Is.EqualTo(6));
         }
-        
+
+        [Test]
+        public void AddNumbers_LoggerPrintsResult()
+        {
+            loggerMock.Setup(s => s.Write(It.IsAny<string>()));
+            stringCalculator.Add("1,2,3");
+            loggerMock.Verify(l => l.Write("6"));
+        }
 
 
         private string GenerateCommaSeparatedNumberString(IEnumerable<int> randomInts)
@@ -65,5 +77,6 @@ namespace StringCalculatorKata
             }
             return numbers; 
         }
+
     }
 }

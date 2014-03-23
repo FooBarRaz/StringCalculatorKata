@@ -7,6 +7,14 @@ namespace StringCalculatorKata
 {
     class StringCalculator
     {
+        private ILogger Console; 
+
+        public StringCalculator(ILogger console)
+        {
+            Console = console;
+        }
+
+
         internal int Add(string numbers)
         {
             var result = 0;
@@ -19,6 +27,7 @@ namespace StringCalculatorKata
                     result += numberAsInt;
                 }
             }
+            Console.Write(result.ToString());
             return result;
         }
 
